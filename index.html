@@ -1,64 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Pulmentic → Earth Year Converter</title>
+ <meta charset="UTF-8">
+ <title>Pulmentic → Earth Year Converter</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0b0b0b;
-      color: #f0f0f0;
-      text-align: center;
-      padding-top: 60px;
-    }
+ <style>
+   body {
+     font-family: Arial, sans-serif;
+     background: #0b0b0b;
+     color: #f0f0f0;
+     text-align: center;
+     padding-top: 60px;
+   }
 
-    input {
-      width: 90px;
-      font-size: 18px;
-      padding: 4px;
-    }
+   input {
+     width: 90px;
+     font-size: 18px;
+     padding: 4px;
+   }
 
-    button {
-      font-size: 16px;
-      padding: 6px 12px;
-      margin-left: 8px;
-      cursor: pointer;
-    }
+   button {
+     font-size: 16px;
+     padding: 6px 12px;
+     margin-left: 8px;
+     cursor: pointer;
+   }
 
-    h2 {
-      margin-top: 30px;
-      color: #6cf;
-    }
-  </style>
+   h2 {
+     margin-top: 30px;
+     color: #6cf;
+   }
+ </style>
 </head>
 <body>
 
-  <h1>Pulmentic Year Converter</h1>
-  <p>Enter Puls (1–25):</p>
+ <h1>Pulmentic Year Converter</h1>
+ <p>Enter Puls (1–25):</p>
 
-  <input type="number" id="puls" min="1" max="25" step="1">
-  <button onclick="convert()">Convert</button>
+ <input type="number" id="puls" min="1" max="25" step="1">
+ <button onclick="convert()">Convert</button>
 
-  <h2 id="result"></h2>
+ <h2 id="result"></h2>
 
-  <script>
-    function convert() {
-      const P = Number(document.getElementById("puls").value);
+ <script>
+   function convert() {
+     const P = Number(document.getElementById("puls").value);
 
-      if (P < 1 || P > 25 || isNaN(P)) {
-        document.getElementById("result").innerText =
-          "Please enter a Puls value between 1 and 25.";
-        return;
-      }
+     if (P < 1 || P > 25 || isNaN(P)) {
+       document.getElementById("result").innerText =
+         "Please enter a Puls value between 1 and 25.";
+       return;
+     }
 
-      // E(P) = 0.3447 * e^(0.1476P) * 10^9
-      const earthYears = 0.3447 * Math.exp(0.1476 * P) * 1e9;
+     // E(P) = 0.3447 * e^(0.1476P) * 10^9 (years)
+     const earthYears = 0.3447 * Math.exp(0.1476 * P) * 1e9;
 
-      document.getElementById("result").innerText =
-        `${P} Puls = ${earthYears.toExponential(3)} Earth years`;
-    }
-  </script>
+     let displayText = "";
+     if (earthYears >= 1e9) {
+       // Billions
+       displayText = `${P} Puls ≈ ${(earthYears / 1e9).toFixed(2)} billion years`;
+     } else if (earthYears >= 1e6) {
+       // Millions
+       displayText = `${P} Puls ≈ ${(earthYears / 1e6).toFixed(2)} million years`;
+     } else {
+       // Thousands or smaller
+       displayText = `${P} Puls ≈ ${earthYears.toFixed(0)} years`;
+     }
+
+     document.getElementById("result").innerText = displayText;
+   }
+ </script>
 
 </body>
 </html>
